@@ -1,28 +1,14 @@
 import os
-import zipfile
-import pandas as pd
-import numpy as np
-import PyPDF2 as pf
+from ocr_pdf import pdftoText
+from splitting import powerDir
+from gensim.summarization import summarize
+'''
+Summarizing the text parsed from Documents
+'''
+entries = os.listdir("C:/Users/roaggarw/Documents/NLP/Parse-Legal/CleanAoA/") #folder containing pdf's
+#entries2 = os.listdir("C:/Users/roaggarw/Documents/NLP/Parse-Legal/images/")
 
-def readPDF(name):
-	df = pd.DataFrame()
+powerDir(pdftoText(entries))
 
-	with zipfile.ZipFile(name+'.zip') as z:
-		for filename in z.namelist():
-			
-			pdfFileObj = open(filename, 'rb') 
-			pdfReader = pf.PdfFileReader(pdfFileObj)
-			ar = np.array([])
-			for page in range(pdfReader.numPages):
-				pageObj = pdfReader.getPage(page).extractText()
-				f1 = pd.Series(pageObj)
-				print(f1)
-				df.append(f1,ignore_index=True)
-				
-			
-	return df
-	
-print (readPDF('new'))
-			
-
-
+file = open("Final_Result.txt",a)
+file.write(generate_summary( "power.txt", 1)) #generating summary
